@@ -106,9 +106,9 @@ public class StringParser {
 		for(int i = 0; i < strings.length; i++) {
 			String str = strings[i];
 			if(exists(strings,str,i))continue;
-			int occurences = amountOfOccurences(str);
+			int occurrences = amountOfOccurrences(str);
 			makeFirstCharUpperCase();
-			result += strings[i] + " " + occurences + '\n';
+			result += strings[i] + " " + occurrences + '\n';
 		}
 		return result;
 	}
@@ -121,12 +121,12 @@ public class StringParser {
 		return result;
 	}
 	
-	private int amountOfOccurences(String str) {
-		int occurences = 0;
+	private int amountOfOccurrences(String str) {
+		int occurrences = 0;
 		for(String s : strings) {
-			if(s.equals(str))occurences++;
+			if(s.equals(str))occurrences++;
 		}
-		return occurences;
+		return occurrences;
 	}
 	
 	private void makeFirstCharUpperCase() {
