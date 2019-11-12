@@ -9,6 +9,7 @@ public class StringParser {
 	
 	public StringParser(String str) {
 		raw = str.toLowerCase();
+		raw = raw.replace('\t', ' ');
 		characterCount = -1;
 	}
 	
@@ -38,7 +39,9 @@ public class StringParser {
 	}
 	
 	private boolean isTabSpace(char c) {
-		if(c == '	' || c == ' ')return true;
+		if(c == ' ') {
+			return true;
+		}
 		else return false;
 	}
 	
@@ -78,6 +81,7 @@ public class StringParser {
 		for(int i = last.length-1; i > 0; i--) {
 			char c = last[i];
 			char h = last[i-1];
+			if(Character.isAlphabetic(h))break;
 			if(isPunctuation(c) && isPunctuation(h)) {
 				lastStr = lastStr.substring(0, lastStr.length()-1);
 			}
@@ -105,6 +109,7 @@ public class StringParser {
 				strings.length + " Words\n";
 		for(int i = 0; i < strings.length; i++) {
 			String str = strings[i];
+			if(strings[i].isEmpty())continue;
 			if(exists(strings,str,i))continue;
 			int occurrences = amountOfOccurrences(str);
 			makeFirstCharUpperCase();
@@ -131,6 +136,7 @@ public class StringParser {
 	
 	private void makeFirstCharUpperCase() {
 		for(int i = 0; i < strings.length; i++) {
+			if(strings[i].length() == 0)continue;
 			if(Character.isAlphabetic(strings[i].charAt(0))) {
 				strings[i] = Character.toUpperCase(strings[i].charAt(0)) + strings[i].substring(1);
 			}
