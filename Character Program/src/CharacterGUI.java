@@ -10,7 +10,6 @@ public class CharacterGUI extends GBFrame{
 	public void buttonClicked(JButton button) {
 		if(button == enterButton) {
 			String input = inputField.getText();
-			System.out.println(Character.valueOf(input.charAt(0)));
 			if(input.length() == 0) {
 				resultArea.setText("Error: empty input");
 				return;

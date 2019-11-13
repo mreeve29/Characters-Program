@@ -23,7 +23,7 @@ public class StringParser {
 		String result = "";
 		char[] split = createCharArray(str);
 		determineCharacterCount(split);
-		for(int i = 0; i < split.length; i++) {
+		for(int i      = 0; i < split.length; i++) {
 			while(i < split.length -1 && !(isTabSpace(split[i]) && isTabSpace(split[i+1]))) {
 				result += split[i];
 				i++;
