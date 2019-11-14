@@ -16,14 +16,15 @@ public class StringParser {
 	public void generate() {
 		String correct = removeSpaces(raw);
 		strings = splitString(correct, ' ');
-		removeTrailingCharactersAll();
+		removeTrailingCharacters();
+//		removeAllPunctuation();
 	}
 	
 	private String removeSpaces(String str) {
 		String result = "";
 		char[] split = createCharArray(str);
 		determineCharacterCount(split);
-		for(int i      = 0; i < split.length; i++) {
+		for(int i = 0; i < split.length; i++) {
 			while(i < split.length -1 && !(isTabSpace(split[i]) && isTabSpace(split[i+1]))) {
 				result += split[i];
 				i++;
@@ -108,14 +109,17 @@ public class StringParser {
 				strings[i] = lastStr.substring(0,lastStr.length()-1);
 			}
 		}
-		
-		
 	}
 	
 	private void removeAllPunctuation() {
 		for(int i = 0; i < strings.length; i++) {
 			String current = strings[i];
-			current = "poop";
+			char[] arr = createCharArray(current);
+			String enter = "";
+			for(int j = 0; j < arr.length; j++) {
+				if(!isPunctuation(arr[j]))enter+=arr[j];
+			}
+			strings[i] = enter;
 		}
 	}
 	
@@ -169,4 +173,20 @@ public class StringParser {
 			}
 		}
 	}
+	
+	public void validate() {
+		for(int i = 0; i < raw.length(); i++) {
+			
+		}
+	}
+	
+	private boolean isAllPunctuation(String str) {
+		for(int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if(!isPunctuation(c))return false; 
+		}
+		return true;
+	}
+	
+	
 }
