@@ -16,6 +16,10 @@ public class CharacterGUI extends GBFrame{
 				resultArea.setText("Error: empty input");
 				return;
 			}
+			if(isInvalid(input)) {
+				resultArea.setText("Error: All punctuation");
+				return;
+			}
 			StringParser p = new StringParser(inputField.getText());
 			p.generate();
 			resultArea.setText(p.toString());
@@ -31,6 +35,13 @@ public class CharacterGUI extends GBFrame{
 	private boolean isEmpty(String str) {
 		for(int i = 0; i < str.length(); i++) {
 			if(str.charAt(i) != ' ' || str.charAt(0) == '\t')return false;
+		}
+		return true;
+	}
+	
+	private boolean isInvalid(String str) { 
+		for(int i = 0; i < str.length(); i++) {
+			if(!StringParser.isPunctuation(str.charAt(i)))return false;
 		}
 		return true;
 	}

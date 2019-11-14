@@ -123,7 +123,7 @@ public class StringParser {
 		}
 	}
 	
-	private boolean isPunctuation(char c) {
+	public static boolean isPunctuation(char c) {
 		if(c == '.' || c == '?' || c == '!' || c == ',' || c == '\'' || c == ':' || c == ';')return true;
 		else return false;
 	}
