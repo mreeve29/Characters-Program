@@ -16,7 +16,7 @@ public class StringParser {
 	public void generate() {
 		String correct = removeSpaces(raw);
 		strings = splitString(correct, ' ');
-		removeTrailingCharacters();
+		removeTrailingCharactersAll();
 	}
 	
 	private String removeSpaces(String str) {
@@ -81,7 +81,7 @@ public class StringParser {
 		for(int i = last.length-1; i > 0; i--) {
 			char c = last[i];
 			char h = last[i-1];
-			if(Character.isAlphabetic(h))break;
+			if(!isPunctuation(h))break;
 			if(isPunctuation(c) && isPunctuation(h)) {
 				lastStr = lastStr.substring(0, lastStr.length()-1);
 			}
@@ -92,6 +92,33 @@ public class StringParser {
 		
 	}
 	
+	private void removeTrailingCharactersAll() {
+		for(int i = 0; i < strings.length; i++) {
+			char[] last = createCharArray(strings[i]);
+			String lastStr = strings[i];
+			for(int j = last.length-1; j > 0; j--) {
+				char c = last[j];
+				char h = last[j-1];
+				if(Character.isAlphabetic(h))break;
+				if(isPunctuation(c) && isPunctuation(h)) {
+					lastStr = lastStr.substring(0, lastStr.length()-1);
+				}
+			}
+			if(isPunctuation(strings[i].charAt(strings[i].length()-1))){
+				strings[i] = lastStr.substring(0,lastStr.length()-1);
+			}
+		}
+		
+		
+	}
+	
+	private void removeAllPunctuation() {
+		for(int i = 0; i < strings.length; i++) {
+			String current = strings[i];
+			current = "poop";
+		}
+	}
+	
 	private boolean isPunctuation(char c) {
 		if(c == '.' || c == '?' || c == '!' || c == ',' || c == '\'' || c == ':' || c == ';')return true;
 		else return false;
@@ -99,7 +126,7 @@ public class StringParser {
 	
 	private void determineCharacterCount(char[] charArr) {
 		int count = 0;
-		for(char c : charArr) if(!Character.isWhitespace(c))count++;
+		for(char c : charArr) if(!isTabSpace(c))count++;
 		characterCount = count;
 	}
 	
