@@ -3,30 +3,31 @@ import javax.swing.*;
 
 public class CharacterGUI extends GBFrame{
 	
-	private JTextField inputField = addTextField("The dog and the cat ran and ran ..h.",1,1,3,1);
-	private JButton enterButton = addButton("Enter",2,1,1,1);
-	private JButton resetButton = addButton("Reset",2,2,1,1);
-	private JButton exitButton = addButton("Exit",2,3,1,1);
-	private JTextArea resultArea = addTextArea("",3,1,3,1);
+	private JTextField inputField = addTextField("The dog and the cat ran and ran ..h.",1,1,6,1);
+	private JButton enterButton = addButton("Enter",2,1,2,1);
+	private JButton resetButton = addButton("Reset",2,5,2,1);
+	private JButton exitButton = addButton("Exit",4,5,2,1);
+	private JTextArea basicResultArea = addTextArea("",3,1,3,1);
+	private JTextArea charsResultArea = addTextArea("",3,4,3,1);
 	
 	public void buttonClicked(JButton button) {
 		if(button == enterButton) {
 			String input = inputField.getText();
+			input = input.replace('\t',' ');
 			if(input.length() == 0 || isEmpty(input)) {
-				resultArea.setText("Error: empty input");
-				return;
-			}
-			if(isInvalid(input)) {
-				resultArea.setText("Error: All punctuation");
+				basicResultArea.setText("Error: empty input");
+				charsResultArea.setText("");
 				return;
 			}
 			StringParser p = new StringParser(inputField.getText());
 			p.generate();
-			resultArea.setText(p.toString());
+			basicResultArea.setText(p.toString());
+			charsResultArea.setText(p.getCharacterCount());
 		}else if(button == resetButton) {
 			inputField.setText("");
 			inputField.requestFocus();
-			resultArea.setText("");
+			basicResultArea.setText("");
+			charsResultArea.setText("");
 		}else if(button == exitButton) {
 			System.exit(1);
 		}
@@ -39,15 +40,9 @@ public class CharacterGUI extends GBFrame{
 		return true;
 	}
 	
-	private boolean isInvalid(String str) { 
-		for(int i = 0; i < str.length(); i++) {
-			if(!StringParser.isPunctuation(str.charAt(i)))return false;
-		}
-		return true;
-	}
-	
 	public CharacterGUI() {
-		resultArea.setEditable(false);
+		basicResultArea.setEditable(false);
+		charsResultArea.setEditable(false);
 	}
 	
 	public static void main(String[] args) {

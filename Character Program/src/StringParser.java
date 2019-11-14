@@ -2,22 +2,18 @@
 public class StringParser {
 
 	private String raw;
-	
 	private String[] strings;
-	
 	private int characterCount;
 	
 	public StringParser(String str) {
 		raw = str.toLowerCase();
-		raw = raw.replace('\t', ' ');
 		characterCount = -1;
 	}
 	
 	public void generate() {
 		String correct = removeSpaces(raw);
 		strings = splitString(correct, ' ');
-		removeTrailingCharacters();
-//		removeAllPunctuation();
+		removeSinglePunctuation();
 	}
 	
 	private String removeSpaces(String str) {
@@ -68,7 +64,7 @@ public class StringParser {
 		return result;
 	}
 	
-	public int getAmountOfWords(String str) {
+	private int getAmountOfWords(String str) {
 		int amount = 1;
 		for(int i = 0; i < str.length(); i++) {
 			if(str.charAt(i) == ' ')amount++;
@@ -76,55 +72,16 @@ public class StringParser {
 		return amount;
 	}
 	
-	private void removeTrailingCharacters() {
-		char[] last = createCharArray(strings[strings.length-1]);
-		String lastStr = strings[strings.length-1];
-		for(int i = last.length-1; i > 0; i--) {
-			char c = last[i];
-			char h = last[i-1];
-			if(!isPunctuation(h))break;
-			if(isPunctuation(c) && isPunctuation(h)) {
-				lastStr = lastStr.substring(0, lastStr.length()-1);
-			}
-		}
-		if(isPunctuation(strings[strings.length-1].charAt(strings[strings.length-1].length()-1))){
-			strings[strings.length-1] = lastStr.substring(0,lastStr.length()-1);
-		}
-		
-	}
-	
-	private void removeTrailingCharactersAll() {
+	private void removeSinglePunctuation(){
 		for(int i = 0; i < strings.length; i++) {
-			char[] last = createCharArray(strings[i]);
-			String lastStr = strings[i];
-			for(int j = last.length-1; j > 0; j--) {
-				char c = last[j];
-				char h = last[j-1];
-				if(Character.isAlphabetic(h))break;
-				if(isPunctuation(c) && isPunctuation(h)) {
-					lastStr = lastStr.substring(0, lastStr.length()-1);
-				}
-			}
-			if(isPunctuation(strings[i].charAt(strings[i].length()-1))){
-				strings[i] = lastStr.substring(0,lastStr.length()-1);
-			}
+			if(isPunctuation(strings[i].charAt(strings[i].length()-1))) {
+				strings[i] = strings[i].substring(0, strings[i].length()-1);
+			}	
 		}
 	}
 	
-	private void removeAllPunctuation() {
-		for(int i = 0; i < strings.length; i++) {
-			String current = strings[i];
-			char[] arr = createCharArray(current);
-			String enter = "";
-			for(int j = 0; j < arr.length; j++) {
-				if(!isPunctuation(arr[j]))enter+=arr[j];
-			}
-			strings[i] = enter;
-		}
-	}
-	
-	public static boolean isPunctuation(char c) {
-		if(c == '.' || c == '?' || c == '!' || c == ',' || c == '\'' || c == ':' || c == ';')return true;
+	private boolean isPunctuation(char c) {
+		if(c == '.' || c == '?' || c == '!')return true;
 		else return false;
 	}
 	
@@ -157,10 +114,26 @@ public class StringParser {
 		return result;
 	}
 	
+	private boolean exists(String str, char c, int start) {
+		boolean result = false;
+		for(int i = start-1; i >= 0; i--) {
+			if(str.charAt(i) == c)return true;
+		}
+		return result;
+	}
+	
 	private int amountOfOccurrences(String str) {
 		int occurrences = 0;
 		for(String s : strings) {
 			if(s.equals(str))occurrences++;
+		}
+		return occurrences;
+	}
+	
+	private int amountOfOccurrences(String str, char c) {
+		int occurrences = 0;
+		for(int i = 0; i < str.length(); i++) {
+			if(str.charAt(i) == c)occurrences++;
 		}
 		return occurrences;
 	}
@@ -174,19 +147,16 @@ public class StringParser {
 		}
 	}
 	
-	public void validate() {
+	public String getCharacterCount() {
+		String result = "";
 		for(int i = 0; i < raw.length(); i++) {
-			
+			if(isTabSpace(raw.charAt(i)))continue;
+			char c = raw.charAt(i);
+			if(exists(raw,c,i))continue;
+			int occurrences = amountOfOccurrences(raw,c);
+			result += c + " " + occurrences + '\n';
 		}
+		return result;
 	}
-	
-	private boolean isAllPunctuation(String str) {
-		for(int i = 0; i < str.length(); i++) {
-			char c = str.charAt(i);
-			if(!isPunctuation(c))return false; 
-		}
-		return true;
-	}
-	
 	
 }
