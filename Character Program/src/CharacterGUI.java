@@ -4,7 +4,7 @@ import javax.swing.*;
 public class CharacterGUI extends GBFrame{
 	
 	//instance class objects
-	private JTextField inputField = addTextField("The dog and the cat ran and ran ..h.",1,1,6,1);
+	private JTextField inputField = addTextField("",1,1,6,1);
 	private JButton enterButton = addButton("Enter",2,1,2,1);
 	private JButton resetButton = addButton("Reset",2,5,2,1);
 	private JButton exitButton = addButton("Exit",4,5,2,1);
