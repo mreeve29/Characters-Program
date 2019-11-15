@@ -58,7 +58,7 @@ public class StringParser {
 				i++;
 			}
 			if(s.length() > 0)result[count++] = s;
-			if(s.length() == 1)wordCount--;
+			if(s.length() == 1 && isPunctuation(s.charAt(0)))wordCount--;
 		}
 		return result;
 	}
@@ -66,7 +66,6 @@ public class StringParser {
 	private int getAmountOfWords(String str) {
 		int amount = 1;
 		for(int i = 0; i < str.length(); i++) {
-			//if(Character.isAlphabetic(str.charAt(i)))
 			if(str.charAt(i) == ' ')amount++;
 		}
 		return amount;
