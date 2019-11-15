@@ -1,55 +1,53 @@
 
 public class StringParser {
 
+	//instance class variables/objects
 	private String raw;
 	private String[] strings;
 	private int characterCount;
+	private int wordCount;
 	
+	//constructor
 	public StringParser(String str) {
 		raw = str.toLowerCase();
 		characterCount = -1;
+		wordCount = 0;
 	}
 	
+	//calculates result
 	public void generate() {
 		String correct = removeSpaces(raw);
+		wordCount = getAmountOfWords(correct);
+		characterCount = determineCharacterCount(correct);
 		strings = splitString(correct, ' ');
 		removeSinglePunctuation();
 	}
 	
+	//removes extra spaces and leaves one between words
 	private String removeSpaces(String str) {
 		String result = "";
-		char[] split = createCharArray(str);
-		determineCharacterCount(split);
-		for(int i = 0; i < split.length; i++) {
-			while(i < split.length -1 && !(isTabSpace(split[i]) && isTabSpace(split[i+1]))) {
-				result += split[i];
+		int length = str.length();
+		for(int i = 0; i < length; i++) {
+			while(i < length -1 && !(str.charAt(i) == ' ' && str.charAt(i+1) == ' ')) {
+				result += str.charAt(i);
 				i++;
 			}
-			if(i == split.length-1 && !isTabSpace(split[i])) {
-				result += split[i];
+			if(i == length-1 && !isSpace(str.charAt(i))) {
+				result += str.charAt(i);
 			}
 		}
-		if(isTabSpace(result.charAt(0))){
+		if(isSpace(result.charAt(0))){
 			result = result.substring(1);
 		}
 		return result;
 	}
 	
-	private boolean isTabSpace(char c) {
-		if(c == ' ') {
-			return true;
-		}
+	private boolean isSpace(char c) {
+		if(c == ' ')return true;
 		else return false;
 	}
 	
-	private char[] createCharArray(String str) {
-		char[] result = new char[str.length()];
-		for(int i = 0; i < str.length(); i++) {
-			result[i] = str.charAt(i);
-		}
-		return result;
-	}
-	
+	//split string method
 	private String[] splitString(String str, char c) {
 		String[] result = new String[getAmountOfWords(str)];
 		int count = 0;
@@ -60,6 +58,7 @@ public class StringParser {
 				i++;
 			}
 			if(s.length() > 0)result[count++] = s;
+			if(s.length() == 1)wordCount--;
 		}
 		return result;
 	}
@@ -67,11 +66,13 @@ public class StringParser {
 	private int getAmountOfWords(String str) {
 		int amount = 1;
 		for(int i = 0; i < str.length(); i++) {
+			//if(Character.isAlphabetic(str.charAt(i)))
 			if(str.charAt(i) == ' ')amount++;
 		}
 		return amount;
 	}
-	
+
+	//remove the last punctuation in each word
 	private void removeSinglePunctuation(){
 		for(int i = 0; i < strings.length; i++) {
 			if(isPunctuation(strings[i].charAt(strings[i].length()-1))) {
@@ -85,16 +86,20 @@ public class StringParser {
 		else return false;
 	}
 	
-	private void determineCharacterCount(char[] charArr) {
+	private int determineCharacterCount(String str) {
 		int count = 0;
-		for(char c : charArr) if(!isTabSpace(c))count++;
-		characterCount = count;
+		for(int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if(!isSpace(c))count++;
+		}
+		return count;
 	}
 	
+	//output
 	public String toString() {
 		String result = 
 				characterCount + " Characters\n" + 
-				strings.length + " Words\n";
+				wordCount + " Word(s)\n";
 		for(int i = 0; i < strings.length; i++) {
 			String str = strings[i];
 			if(strings[i].isEmpty())continue;
@@ -105,7 +110,8 @@ public class StringParser {
 		}
 		return result;
 	}
-		
+	
+	//these 2 methods are used to exclude duplicate words/characters in output
 	private boolean exists(String[] arr, String str, int start) {
 		boolean result = false;
 		for(int i = start-1; i >= 0; i--) {
@@ -122,6 +128,7 @@ public class StringParser {
 		return result;
 	}
 	
+	//these 2 methods are used to count up how many time a word/character appears in the input 
 	private int amountOfOccurrences(String str) {
 		int occurrences = 0;
 		for(String s : strings) {
@@ -138,6 +145,7 @@ public class StringParser {
 		return occurrences;
 	}
 	
+	//formats
 	private void makeFirstCharUpperCase() {
 		for(int i = 0; i < strings.length; i++) {
 			if(strings[i].length() == 0)continue;
@@ -150,7 +158,7 @@ public class StringParser {
 	public String getCharacterCount() {
 		String result = "";
 		for(int i = 0; i < raw.length(); i++) {
-			if(isTabSpace(raw.charAt(i)))continue;
+			if(isSpace(raw.charAt(i)))continue;
 			char c = raw.charAt(i);
 			if(exists(raw,c,i))continue;
 			int occurrences = amountOfOccurrences(raw,c);
